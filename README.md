@@ -10,12 +10,14 @@ This module was initially created to run node removal experiments with two separ
 
 The matrix\_main.py script can be used to run a random walk. The syntax looks like:
 
-`./matrix_main.py <input_graph> <seed> [-l <low_list>] [-r <remove_nodes>]`
+`python matrix_main.py <input_graph> <seed> [-l <low_list>] [-r <remove_nodes>]`
 
 where the input graph is in edge list format, the seed is a list of nodes to
 start the random walk at, the optional low list is a list of nodes to down-weight
 for node removal experiments (as in the tissue-specific networks paper), and the
 optional node removal list is a list of nodes to remove completely from the graph.
+
+More thorough documentation to come.
 
 ## Using the module
 
