@@ -27,13 +27,14 @@ def main(argv):
 
     # set up argument parsing
     parser = argparse.ArgumentParser()
-    parser.add_argument("ppi", help="Original PPI graph input file, in edge\
-                                     list format")
-    parser.add_argument("low_list", help="List of genes expressed and\
-                                          unexpressed in the current tissue")
+    parser.add_argument("input_graph", help="Original graph input file, in\
+                                             edge list format")
     parser.add_argument("seed", help="Seed file, to pull start nodes from")
+    parser.add_argument("-l", "--low_list", nargs="?", default=None,
+                        help="<Optional> List of genes expressed and\
+                              unexpressed in the current tissue, if applicable")
     parser.add_argument("-r", "--remove", nargs="+",
-                        help="<Optional> Nodes to remove, if any")
+                        help="<Optional> Nodes to remove from the graph, if any")
     opts = parser.parse_args()
 
     restart_prob = 0.7
@@ -47,7 +48,7 @@ def main(argv):
         seed_list = [s for s in seed_list if s not in remove_list]
 
     # run the experiments, and write a rank list to stdout
-    mm = MultiMatrix(opts.ppi, opts.low_list, remove_list)
+    mm = MultiMatrix(opts.input_graph, opts.low_list, remove_list)
     mm.run_exp(seed_list, restart_prob, original_graph_prob)
 
 

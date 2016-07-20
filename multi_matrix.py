@@ -90,11 +90,15 @@ class MultiMatrix:
 
     def _calculate_next_p(self, p_t, p_0):
         """ Calculate the next probability vector. """
-        no_epsilon = np.squeeze(np.asarray(np.dot(self.tsg_matrix, p_t) *
-                                (1 - self.og_prob)))
-        epsilon = np.squeeze(np.asarray(np.dot(self.og_matrix, p_t) *
-                                  (self.og_prob)))
-        no_restart = np.add(epsilon, no_epsilon) * (1 - self.restart_prob)
+        if self.tsg_matrix:
+            no_epsilon = np.squeeze(np.asarray(np.dot(self.tsg_matrix, p_t) *
+                                    (1 - self.og_prob)))
+            epsilon = np.squeeze(np.asarray(np.dot(self.og_matrix, p_t) *
+                                      (self.og_prob)))
+            no_restart = np.add(epsilon, no_epsilon) * (1 - self.restart_prob)
+        else:
+            epsilon = np.squeeze(np.asarray(np.dot(self.og_matrix, p_t)))
+            no_restart = epsilon * (1 - self.restart_prob)
         restart = p_0 * self.restart_prob
         return np.add(no_restart, restart)
 
@@ -131,12 +135,15 @@ class MultiMatrix:
                     key=len)
 
         self.OG = original_graph
-
         og_not_normalized = nx.to_numpy_matrix(original_graph)
-        tsg_not_normalized = self._tsg_matrix(original_graph,
-                                              og_not_normalized, low_list)
         self.og_matrix = self._normalize_cols(og_not_normalized)
-        self.tsg_matrix = self._normalize_cols(tsg_not_normalized)
+
+        if low_list:
+            tsg_not_normalized = self._tsg_matrix(original_graph,
+                                                  og_not_normalized, low_list)
+            self.tsg_matrix = self._normalize_cols(tsg_not_normalized)
+        else:
+            self.tsg_matrix = []
 
 
     def _tsg_matrix(self, original_graph, og_matrix, low_list):
