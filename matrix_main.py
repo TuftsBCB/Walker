@@ -7,7 +7,7 @@ import argparse
 from multi_matrix import MultiMatrix
 
 def generate_seed_list(seed_file):
-    """ Read seed file into a list """
+    """ Read seed file into a list. """
     seed_list = []
 
     try:
@@ -46,6 +46,7 @@ def main(argv):
     if remove_list:
         seed_list = [s for s in seed_list if s not in remove_list]
 
+    # run the experiments, and write a rank list to stdout
     mm = MultiMatrix(opts.ppi, opts.low_list, remove_list)
     mm.run_exp(seed_list, restart_prob, original_graph_prob)
 
