@@ -1,4 +1,4 @@
-# python-rwr
+# Walker
 
 Requires modules `networkx`, `numpy`, `scikit-learn`, and `argparse`.
 
@@ -21,6 +21,6 @@ More thorough documentation to come.
 
 ## Using the module
 
-If you use the python-rwr module, please cite:
+If you use the Walker module, please cite:
 
 Zhang H, Schaefer M, Crawford J, Kiel C, Serrano L, and Cowen LJ. "Studying Gene Prioritization in Tissue-Specific Networks: A Case Study with the BRAF Oncogene." In review. (2016)
