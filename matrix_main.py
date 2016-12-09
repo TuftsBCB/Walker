@@ -16,12 +16,28 @@ def generate_seed_list(seed_file):
         sys.exit("Error opening file {}".format(seed_file))
 
     for line in fp.readlines():
-        info = line.split()
-        seed_list.append(info[1])
+        info = line.rstrip().split()
+        seed_list.append(info[0])
 
     fp.close()
     return seed_list
 
+def get_node_list(node_file):
+    node_list = []
+    try:
+        fp = open(node_file, 'r')
+    except IOError:
+        sys.exit('Could not open file: {}'.format(node_file))
+
+    # read the first (i.e. largest) connected component
+    cur_line = fp.readline()
+    while cur_line and not cur_line.isspace():
+        if cur_line:
+            node_list.append(cur_line.rstrip())
+        cur_line = fp.readline()
+
+    fp.close()
+    return node_list
 
 def main(argv):
 
@@ -33,6 +49,8 @@ def main(argv):
     parser.add_argument("-l", "--low_list", nargs="?", default=None,
                         help="<Optional> List of genes expressed and\
                               unexpressed in the current tissue, if applicable")
+    parser.add_argument("-n", "--node_list", nargs="?", default=None,
+                        help="<Optional> Order of output probs")
     parser.add_argument("-r", "--remove", nargs="+",
                         help="<Optional> Nodes to remove from the graph, if any")
     opts = parser.parse_args()
@@ -41,6 +59,7 @@ def main(argv):
     original_graph_prob = 0.1
 
     seed_list = generate_seed_list(opts.seed)
+    node_list = get_node_list(opts.node_list) if opts.node_list else []
 
     # filter nodes we want to remove out of the starting seed, if any
     remove_list = opts.remove if opts.remove else []
@@ -49,7 +68,7 @@ def main(argv):
 
     # run the experiments, and write a rank list to stdout
     mm = MultiMatrix(opts.input_graph, opts.low_list, remove_list)
-    mm.run_exp(seed_list, restart_prob, original_graph_prob)
+    mm.run_exp(seed_list, restart_prob, original_graph_prob, node_list)
 
 
 if __name__ == '__main__':

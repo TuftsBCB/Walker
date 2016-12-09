@@ -40,7 +40,7 @@ class MultiMatrix:
     def __init__(self, original_ppi, low_list, remove_nodes=[]):
         self._build_matrices(original_ppi, low_list, remove_nodes)
 
-    def run_exp(self, source, restart_prob, og_prob):
+    def run_exp(self, source, restart_prob, og_prob, node_list=[]):
         """ Run a multi-graph random walk experiment, and print results.
 
         Parameters:
@@ -72,9 +72,17 @@ class MultiMatrix:
             p_t = p_t_1
 
         # now, generate and print a rank list from the final prob vector
-        for gene in self._generate_rank_list(p_t):
-            print(gene)
+        if node_list:
+            for node, prob in self._generate_prob_list(p_t, node_list):
+                print '{}\t{:.10f}'.format(node, prob)
+        else:
+            for node, prob in self._generate_rank_list(p_t):
+                print '{}\t{:.10f}'.format(node, prob)
 
+    def _generate_prob_list(self, p_t, node_list):
+        gene_probs = dict(zip(self.OG.nodes(), p_t.tolist()))
+        for node in node_list:
+            yield node, gene_probs[node]
 
     def _generate_rank_list(self, p_t):
         """ Return a rank list, generated from the final probability vector.
@@ -85,7 +93,7 @@ class MultiMatrix:
         # sort by probability (from largest to smallest), and generate a
         # sorted list of Entrez IDs
         for s in sorted(gene_probs, key=lambda x: x[1], reverse=True):
-            yield s[0]
+            yield s[0], s[1]
 
 
     def _calculate_next_p(self, p_t, p_0):
@@ -111,7 +119,7 @@ class MultiMatrix:
                 # matrix columns are in the same order as nodes in original nx
                 # graph, so we can get the index of the source node from the OG
                 source_index = self.OG.nodes().index(source_id)
-                p_0[source_index] = 1
+                p_0[source_index] = 1 / float(len(source))
             except ValueError:
                 sys.exit("Source node {} is not in original graph. Source: {}. Exiting.".format(
                           source_id, source))
@@ -182,8 +190,9 @@ class MultiMatrix:
         edge_list = []
 
         for line in graph_fp.readlines():
-            split_line = map(str.strip, line.split('\t'))
-            edge_list.append((split_line[0], split_line[1], float(split_line[2])))
+            split_line = map(str.strip, line.split())
+            # edge_list.append((split_line[0], split_line[1], float(split_line[2])))
+            edge_list.append((split_line[0], split_line[1], float(1)))
 
         G.add_weighted_edges_from(edge_list)
         graph_fp.close()
