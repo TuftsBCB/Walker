@@ -192,15 +192,11 @@ class Walker:
         # parse network input
         for line in graph_fp.readlines():
             split_line = line.rstrip().split('\t')
-            if len(split_line) > 2:
+            if len(split_line) > 3:
                 # assume input graph is in the form of HIPPIE network
-                try:
-                    edge_list.append((split_line[1], split_line[3],
-                                      float(split_line[4])))
-                except ValueError:
-                    print line
-                    exit()
-            elif len(split_line) < 2:
+                edge_list.append((split_line[1], split_line[3],
+                                  float(split_line[4])))
+            elif len(split_line) < 3:
                 # assume input graph is a simple edgelist without weights
                 edge_list.append((split_line[0], split_line[1], float(1)))
             else:
