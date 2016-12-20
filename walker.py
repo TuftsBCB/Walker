@@ -11,7 +11,7 @@ from sklearn.preprocessing import normalize
 # (this is the same as the original RWR paper)
 CONV_THRESHOLD = 0.000001
 
-class MultiMatrix:
+class Walker:
     """ Class for multi-graph walk to convergence, using matrix computation.
 
     Random walk with restart (RWR) algorithm adapted from:
@@ -189,10 +189,24 @@ class MultiMatrix:
         G = nx.Graph()
         edge_list = []
 
+        # parse network input
         for line in graph_fp.readlines():
-            split_line = map(str.strip, line.split())
-            # edge_list.append((split_line[0], split_line[1], float(split_line[2])))
-            edge_list.append((split_line[0], split_line[1], float(1)))
+            split_line = line.rstrip().split('\t')
+            if len(split_line) > 2:
+                # assume input graph is in the form of HIPPIE network
+                try:
+                    edge_list.append((split_line[1], split_line[3],
+                                      float(split_line[4])))
+                except ValueError:
+                    print line
+                    exit()
+            elif len(split_line) < 2:
+                # assume input graph is a simple edgelist without weights
+                edge_list.append((split_line[0], split_line[1], float(1)))
+            else:
+                # assume input graph is a simple edgelist with weights
+                edge_list.append((split_line[0], split_line[1],
+                                  float(split_line[2])))
 
         G.add_weighted_edges_from(edge_list)
         graph_fp.close()
