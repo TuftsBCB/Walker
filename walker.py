@@ -98,7 +98,7 @@ class Walker:
 
     def _calculate_next_p(self, p_t, p_0):
         """ Calculate the next probability vector. """
-        if self.tsg_matrix:
+        if self.tsg_matrix is not None:
             no_epsilon = np.squeeze(np.asarray(np.dot(self.tsg_matrix, p_t) *
                                     (1 - self.og_prob)))
             epsilon = np.squeeze(np.asarray(np.dot(self.og_matrix, p_t) *
@@ -151,7 +151,7 @@ class Walker:
                                                   og_not_normalized, low_list)
             self.tsg_matrix = self._normalize_cols(tsg_not_normalized)
         else:
-            self.tsg_matrix = []
+            self.tsg_matrix = None
 
 
     def _tsg_matrix(self, original_graph, og_matrix, low_list):

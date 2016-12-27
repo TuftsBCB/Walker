@@ -73,7 +73,7 @@ def main(argv):
 
     # run the experiments, and write a rank list to stdout
     wk = Walker(opts.input_graph, opts.low_list, remove_list)
-    wk.run_exp(seed_list, opts.restart_prob, 
+    wk.run_exp(seed_list, opts.restart_prob,
                opts.original_graph_prob, node_list)
 
 
