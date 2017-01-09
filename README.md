@@ -1,5 +1,7 @@
 # Walker
 
+[![DOI](https://zenodo.org/badge/63801061.svg)](https://zenodo.org/badge/latestdoi/63801061)
+
 Requires modules `networkx`, `numpy`, `scikit-learn`, and `argparse`.
 
 For a description of the Random Walk with Restart (RWR) algorithm, which
