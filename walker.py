@@ -175,6 +175,8 @@ class Walker:
             tsg_matrix[index] = np.zeros(tsg_matrix.shape[0])
             tsg_matrix[:, index] = np.zeros(tsg_matrix.shape[1])
 
+        list_fp.close()
+
         return tsg_matrix
 
 
