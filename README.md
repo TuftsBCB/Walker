@@ -16,8 +16,7 @@ This module can be used to run two types of experiments:
   Kohler et al. paper referenced above.
 - A random walk with restart, from a set of seed nodes, on a "tissue-specific"
   network. The network is defined by a "low list" of nodes (i.e. genes) that
-  are not expressed in the tissue of interest. This is described in more
-  detail in our paper, which is currently in review.
+  are not expressed in the tissue of interest.
 
 Examples of both experiments are described in more detail below.
 
@@ -50,9 +49,3 @@ Or, to run a "tissue-specific" random walk experiment using the same
 simple example network, try:
 
 `python run_walker.py testdata/test_network.ppi testdata/test_seed.txt -l testdata/test_low_list.txt`
-
-## Using the module
-
-If you use the Walker module, please cite:
-
-Zhang H, Schaefer M, Crawford J, Kiel C, Serrano L, and Cowen LJ. "Studying Gene Prioritization in Tissue-Specific Networks: A Case Study with the BRAF Oncogene." In review. (2016)
