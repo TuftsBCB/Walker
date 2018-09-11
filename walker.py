@@ -1,3 +1,4 @@
+from __future__ import print_function
 """
 Implementation of tissue-specific graph walk with RWR
 
@@ -74,13 +75,13 @@ class Walker:
         # now, generate and print a rank list from the final prob vector
         if node_list:
             for node, prob in self._generate_prob_list(p_t, node_list):
-                print '{}\t{:.10f}'.format(node, prob)
+                print('{}\t{:.10f}'.format(node, prob))
         else:
             for node, prob in self._generate_rank_list(p_t):
-                print '{}\t{:.10f}'.format(node, prob)
+                print('{}\t{:.10f}'.format(node, prob))
 
     def _generate_prob_list(self, p_t, node_list):
-        gene_probs = dict(zip(self.OG.nodes(), p_t.tolist()))
+        gene_probs = dict(list(zip(self.OG.nodes(), p_t.tolist())))
         for node in node_list:
             yield node, gene_probs[node]
 
@@ -89,7 +90,7 @@ class Walker:
 
         Gene rank list is ordered from highest to lowest probability.
         """
-        gene_probs = zip(self.OG.nodes(), p_t.tolist())
+        gene_probs = list(zip(self.OG.nodes(), p_t.tolist()))
         # sort by probability (from largest to smallest), and generate a
         # sorted list of Entrez IDs
         for s in sorted(gene_probs, key=lambda x: x[1], reverse=True):
@@ -166,7 +167,7 @@ class Walker:
         index_list = []
 
         for line in list_fp.readlines():
-            split_line = map(str.strip, line.split('\t'))
+            split_line = list(map(str.strip, line.split('\t')))
             if split_line[1] == 'NA' and split_line[0] in original_graph.nodes():
                 index_list.append(original_graph.nodes().index(split_line[0]))
 
