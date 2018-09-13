@@ -119,7 +119,7 @@ class Walker:
             try:
                 # matrix columns are in the same order as nodes in original nx
                 # graph, so we can get the index of the source node from the OG
-                source_index = self.OG.nodes().index(source_id)
+                source_index = list(self.OG.nodes()).index(source_id)
                 p_0[source_index] = 1 / float(len(source))
             except ValueError:
                 sys.exit("Source node {} is not in original graph. Source: {}. Exiting.".format(
