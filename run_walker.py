@@ -49,6 +49,8 @@ def main(argv):
     parser.add_argument('input_graph', help='Original graph input file, in\
                                              edge list format')
     parser.add_argument('seed', help='Seed file, to pull start nodes from')
+    parser.add_argument('-d', '--delim', type=str, default='\t',
+                        help='Delimiter for input edge list, defaults to tabs')
     parser.add_argument('-e', '--restart_prob', type=float, default=0.7,
                         help='Restart probability for random walk')
     parser.add_argument('-l', '--low_list', nargs='?', default=None,
@@ -72,7 +74,7 @@ def main(argv):
         seed_list = [s for s in seed_list if s not in remove_list]
 
     # run the experiments, and write a rank list to stdout
-    wk = Walker(opts.input_graph, opts.low_list, remove_list)
+    wk = Walker(opts.delim, opts.input_graph, opts.low_list, remove_list)
     wk.run_exp(seed_list, opts.restart_prob,
                opts.original_graph_prob, node_list)
 

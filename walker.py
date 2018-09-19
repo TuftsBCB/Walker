@@ -38,7 +38,8 @@ class Walker:
                                TSG with probability 1 - og_prob)
     """
 
-    def __init__(self, original_ppi, low_list, remove_nodes=[]):
+    def __init__(self, delim, original_ppi, low_list, remove_nodes=[]):
+        self.delim = delim
         self._build_matrices(original_ppi, low_list, remove_nodes)
 
     def run_exp(self, source, restart_prob, og_prob, node_list=[]):
@@ -194,7 +195,7 @@ class Walker:
 
         # parse network input
         for line in graph_fp.readlines():
-            split_line = line.rstrip().split('\t')
+            split_line = line.rstrip().split(self.delim)
             if len(split_line) > 3:
                 # assume input graph is in the form of HIPPIE network
                 edge_list.append((split_line[1], split_line[3],
